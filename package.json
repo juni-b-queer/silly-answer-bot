@@ -1,0 +1,20 @@
+{
+  "name": "fake-lie-detector",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "run": "bun run src/index.ts",
+    "build": "bun build --target=bun ./src/index.ts --outfile=./build/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@atproto/api": "^0.6.23",
+    "atproto-firehose": "^0.2.2",
+    "bsky-event-handlers": "0.4.11"
+  }
+}
