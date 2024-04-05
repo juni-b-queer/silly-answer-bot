@@ -10,7 +10,7 @@ import {
 import {MagicEightBallHandler} from "./handler/MagicEightBall.ts";
 
 let magic8BallAgentDetails: AgentDetails = {
-    name: "silly-reply-bot",
+    name: "8-ball-bot",
     did: undefined,
     handle: <string>Bun.env.MAGIC_BOT_BSKY_HANDLE,
     password: <string>Bun.env.MAGIC_BOT_BSKY_PASSWORD,
@@ -19,7 +19,7 @@ let magic8BallAgentDetails: AgentDetails = {
 }
 
 let lieDetectorAgentDetails: AgentDetails = {
-    name: "silly-reply-bot",
+    name: "lie-detector-bot",
     did: undefined,
     handle: <string>Bun.env.LIE_BOT_BSKY_HANDLE,
     password: <string>Bun.env.LIE_BOT_BSKY_PASSWORD,
