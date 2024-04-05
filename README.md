@@ -1,12 +1,19 @@
-# fake-lie-detector
+# Silly reply bot
 
-To install dependencies:
+## !magic8Ball
+Responds with a magic 8 ball response
+
+## !liedetector
+Responds with a variation of "The post is true/false"
+
+
+### To install dependencies:
 
 ```bash
 bun install
 ```
 
-To run:
+### To run:
 
 ```bash
 bun run index.ts
