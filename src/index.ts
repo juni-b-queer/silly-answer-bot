@@ -10,7 +10,7 @@ import {
 import {MagicEightBallHandler} from "./handler/MagicEightBall.ts";
 
 let lieDetectorAgentDetails: AgentDetails = {
-    name: "remind-bot",
+    name: "silly-reply-bot",
     did: undefined,
     handle: <string>Bun.env.BOT_BSKY_HANDLE,
     password: <string>Bun.env.BOT_BSKY_PASSWORD,
