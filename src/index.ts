@@ -69,6 +69,6 @@ try {
 
 const firehoseSubscription = new FirehoseSubscription(
     [lieDetectorHandlerController, magic8BallHandlerController],
-    150
+    300
 );
 
