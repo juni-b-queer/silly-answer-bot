@@ -1,16 +1,37 @@
 import {
     InputIsCommandValidator,
-    PostHandler,
-    ReplyWithGeneratedTextAction,
-    LogInputTextAction
+    ReplyToSkeetWithGeneratedTextAction,
+    LogInputTextAction,
+    CreateSkeetHandler,
+    HandlerAgent,
+    CreateSkeetMessage
 } from "bsky-event-handlers";
 
 const COMMAND = "magic8ball"
-export let MagicEightBallHandler = new PostHandler(
-    [new InputIsCommandValidator(COMMAND, false)],
-    [new ReplyWithGeneratedTextAction(responseGenerator), new LogInputTextAction("magic 8 ball")],
-    false
-)
+// export let MagicEightBallHandler = new PostHandler(
+//     [new InputIsCommandValidator(COMMAND, false)],
+//     [new ReplyWithGeneratedTextAction(responseGenerator), new LogInputTextAction("magic 8 ball")],
+//     false
+// )
+
+export class MagicEightBallHandler extends CreateSkeetHandler{
+    constructor(
+        public handlerAgent: HandlerAgent,
+    ) {
+        super(
+            [new InputIsCommandValidator(COMMAND, false)],
+            [
+                new ReplyToSkeetWithGeneratedTextAction(responseGenerator),
+                new LogInputTextAction("magic 8 ball")
+            ],
+            handlerAgent,
+        );
+    }
+
+    async handle(message: CreateSkeetMessage): Promise<void> {
+        return super.handle(message);
+    }
+}
 
 const RESPONSES = [
     "It is certain.",

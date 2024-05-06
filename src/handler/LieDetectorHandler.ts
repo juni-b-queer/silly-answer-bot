@@ -1,16 +1,37 @@
 import {
     InputIsCommandValidator,
-    PostHandler,
-    ReplyWithGeneratedTextAction,
-    LogInputTextAction
+    ReplyToSkeetWithGeneratedTextAction,
+    LogInputTextAction,
+    CreateSkeetHandler,
+    HandlerAgent,
+    CreateSkeetMessage
 } from "bsky-event-handlers";
 
 const COMMAND = "liedetector"
-export let LieDetectorHandler = new PostHandler(
-    [new InputIsCommandValidator(COMMAND, false)],
-    [new ReplyWithGeneratedTextAction(responseGenerator), new LogInputTextAction("lie detector")],
-    false
-)
+// export let LieDetectorHandler = new PostHandler(
+//     [new InputIsCommandValidator(COMMAND, false)],
+//     [new ReplyWithGeneratedTextAction(responseGenerator), new LogInputTextAction("lie detector")],
+//     false
+// )
+
+export class LieDetectorHandler extends CreateSkeetHandler{
+    constructor(
+        public handlerAgent: HandlerAgent,
+    ) {
+        super(
+            [new InputIsCommandValidator(COMMAND, false)],
+            [
+                new ReplyToSkeetWithGeneratedTextAction(responseGenerator),
+                new LogInputTextAction("lie detector")
+            ],
+            handlerAgent,
+        );
+    }
+
+    async handle(message: CreateSkeetMessage): Promise<void> {
+        return super.handle(message);
+    }
+}
 
 const TRUE_RESPONSES = [
     "The skeet holds true.",
