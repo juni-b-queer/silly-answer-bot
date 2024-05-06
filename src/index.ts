@@ -10,7 +10,7 @@ const lieDetectorHandlerAgent = new HandlerAgent(
 );
 
 const magic8BallHandlerAgent = new HandlerAgent(
-    'megic-eight-ball-bot',
+    'magic-eight-ball-bot',
     <string>Bun.env.MAGIC_BOT_BSKY_HANDLE,
     <string>Bun.env.MAGIC_BOT_BSKY_PASSWORD
 );
