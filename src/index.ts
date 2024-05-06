@@ -1,5 +1,5 @@
 import {LieDetectorHandler} from "./handler/LieDetectorHandler.ts";
-import {DebugLog, HandlerAgent, JetstreamSubscription} from "bsky-event-handlers";
+import {BadBotHandler, DebugLog, GoodBotHandler, HandlerAgent, JetstreamSubscription} from "bsky-event-handlers";
 import {MagicEightBallHandler} from "./handler/MagicEightBall.ts";
 
 
@@ -22,7 +22,6 @@ let handlers = {
         c: [
             new LieDetectorHandler(lieDetectorHandlerAgent),
             new MagicEightBallHandler(magic8BallHandlerAgent),
-
         ]
     },
 }

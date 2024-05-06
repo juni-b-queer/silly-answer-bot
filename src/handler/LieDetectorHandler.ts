@@ -8,11 +8,6 @@ import {
 } from "bsky-event-handlers";
 
 const COMMAND = "liedetector"
-// export let LieDetectorHandler = new PostHandler(
-//     [new InputIsCommandValidator(COMMAND, false)],
-//     [new ReplyWithGeneratedTextAction(responseGenerator), new LogInputTextAction("lie detector")],
-//     false
-// )
 
 export class LieDetectorHandler extends CreateSkeetHandler{
     constructor(
@@ -129,7 +124,7 @@ const FALSE_RESPONSES = [
     "The skeet lacks credibility."
 ]
 
-export function responseGenerator(post) {
+export function responseGenerator(message: CreateSkeetMessage, handlerAgent: HandlerAgent): string {
     let response = ""
     let randomNumber = Math.floor(Math.random() * 2) + 1;
 
