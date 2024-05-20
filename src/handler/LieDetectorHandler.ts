@@ -7,7 +7,8 @@ import {
     CreateSkeetMessage
 } from "bsky-event-handlers";
 
-const COMMAND = "liedetector"
+const COMMAND = <string>Bun.env.LIE_DETECTOR_COMMAND ?? "liedetector"
+
 
 export class LieDetectorHandler extends CreateSkeetHandler{
     constructor(

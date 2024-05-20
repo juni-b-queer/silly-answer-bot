@@ -7,7 +7,8 @@ import {
     CreateSkeetMessage
 } from "bsky-event-handlers";
 
-const COMMAND = "magic8ball"
+const COMMAND = <string>Bun.env.MAGIC_BOT_COMMAND ?? "magic8ball"
+
 
 export class MagicEightBallHandler extends CreateSkeetHandler{
     constructor(
