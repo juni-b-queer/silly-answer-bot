@@ -1,4 +1,5 @@
 import {
+    CreateLikeAction,
     CreateSkeetMessage,
     HandlerAgent,
     InputIsCommandValidator,
@@ -18,7 +19,8 @@ export class MagicEightBallHandler extends MessageHandler {
             [new InputIsCommandValidator(COMMAND, false)],
             [
                 new ReplyToSkeetWithGeneratedTextAction(responseGenerator),
-                new LogInputTextAction("magic 8 ball")
+                new LogInputTextAction("magic 8 ball"),
+                new CreateLikeAction(MessageHandler.getUriFromMessage, MessageHandler.getCidFromMessage)
             ],
             handlerAgent,
         );
