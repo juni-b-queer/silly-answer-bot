@@ -1,5 +1,13 @@
 import {LieDetectorHandler} from "./handler/LieDetectorHandler.ts";
-import {BadBotHandler, DebugLog, GoodBotHandler, HandlerAgent, JetstreamSubscription} from "bsky-event-handlers";
+import {
+    AbstractHandler,
+    BadBotHandler, CreateSkeetAction,
+    DebugLog,
+    GoodBotHandler,
+    HandlerAgent,
+    IntervalSubscription, IntervalSubscriptionHandlers, IsFourTwentyValidator,
+    JetstreamSubscription, LogInputTextAction
+} from "bsky-event-handlers";
 import {MagicEightBallHandler} from "./handler/MagicEightBall.ts";
 
 
@@ -15,6 +23,12 @@ const magic8BallHandlerAgent = new HandlerAgent(
     <string>Bun.env.MAGIC_BOT_BSKY_PASSWORD
 );
 
+const isItFourTwentyHandlerAgent = new HandlerAgent(
+    'is-it-four-twenty-bot',
+    <string>Bun.env.IS_IT_FOUR_TWENTY_BSKY_HANDLE,
+    <string>Bun.env.IS_IT_FOUR_TWENTY_BSKY_PASSWORD
+);
+
 let jetstreamSubscription: JetstreamSubscription;
 
 let handlers = {
@@ -22,21 +36,53 @@ let handlers = {
         c: [
             new LieDetectorHandler(lieDetectorHandlerAgent),
             new MagicEightBallHandler(magic8BallHandlerAgent),
+            GoodBotHandler.make(isItFourTwentyHandlerAgent),
+            BadBotHandler.make(isItFourTwentyHandlerAgent)
         ]
     },
 }
 
+let intervalSubscription: IntervalSubscription;
+
+const intervalSubscriptionHandlers: IntervalSubscriptionHandlers = [
+    {
+        intervalSeconds: 60,
+        handlers:[
+            new AbstractHandler(
+                [IsFourTwentyValidator.make()],
+                [
+                    LogInputTextAction.make("Is 4:20"),
+                    CreateSkeetAction.make("It's 4:20 somewhere!")
+                ],
+                isItFourTwentyHandlerAgent),
+            new AbstractHandler(
+                [IsFourTwentyValidator.make().not()],
+                [
+                    LogInputTextAction.make("Is not 4:20"),
+                    CreateSkeetAction.make("It's not 4:20 anywhere :(")
+
+                ],
+                isItFourTwentyHandlerAgent)
+        ]
+    }
+]
+
 async function initialize() {
     await lieDetectorHandlerAgent.authenticate()
     await magic8BallHandlerAgent.authenticate()
+    await isItFourTwentyHandlerAgent.authenticate()
     DebugLog.info("INIT", 'Initialized!')
 
     jetstreamSubscription = new JetstreamSubscription(
         handlers,
         <string>Bun.env.JETSTREAM_URL
     );
+    intervalSubscription = new IntervalSubscription(
+        intervalSubscriptionHandlers
+    )
 }
 
 initialize().then(() => {
     jetstreamSubscription.createSubscription()
+    intervalSubscription.createSubscription()
 });

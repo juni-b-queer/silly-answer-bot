@@ -1,16 +1,16 @@
 import {
-    InputIsCommandValidator,
-    ReplyToSkeetWithGeneratedTextAction,
-    LogInputTextAction,
-    CreateSkeetHandler,
+    CreateSkeetMessage,
     HandlerAgent,
-    CreateSkeetMessage
+    InputIsCommandValidator,
+    LogInputTextAction,
+    MessageHandler,
+    ReplyToSkeetWithGeneratedTextAction
 } from "bsky-event-handlers";
 
 const COMMAND = <string>Bun.env.LIE_DETECTOR_COMMAND ?? "liedetector"
 
 
-export class LieDetectorHandler extends CreateSkeetHandler{
+export class LieDetectorHandler extends MessageHandler {
     constructor(
         public handlerAgent: HandlerAgent,
     ) {
@@ -24,8 +24,8 @@ export class LieDetectorHandler extends CreateSkeetHandler{
         );
     }
 
-    async handle(message: CreateSkeetMessage): Promise<void> {
-        return super.handle(message);
+    async handle(handlerAgent: HandlerAgent | undefined, message: CreateSkeetMessage): Promise<void> {
+        return super.handle(undefined, message);
     }
 }
 
@@ -125,7 +125,7 @@ const FALSE_RESPONSES = [
     "The skeet lacks credibility."
 ]
 
-export function responseGenerator(message: CreateSkeetMessage, handlerAgent: HandlerAgent): string {
+export function responseGenerator(handlerAgent: HandlerAgent, message: CreateSkeetMessage): string {
     let response = ""
     let randomNumber = Math.floor(Math.random() * 2) + 1;
 
