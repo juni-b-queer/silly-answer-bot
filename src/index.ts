@@ -58,9 +58,7 @@ const intervalSubscriptionHandlers: IntervalSubscriptionHandlers = [
             new AbstractHandler(
                 [IsFourTwentyValidator.make().not()],
                 [
-                    LogInputTextAction.make("Is not 4:20"),
                     CreateSkeetAction.make("It's not 4:20 anywhere :(")
-
                 ],
                 isItFourTwentyHandlerAgent)
         ]
