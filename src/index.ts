@@ -5,7 +5,7 @@ import {
     DebugLog,
     GoodBotHandler,
     HandlerAgent,
-    IntervalSubscription, IntervalSubscriptionHandlers, IsFourTwentyValidator,
+    IntervalSubscription, IntervalSubscriptionHandlers, IsFourTwentyValidator, IsSpecifiedTimeValidator,
     JetstreamSubscription, LogInputTextAction
 } from "bsky-event-handlers";
 import {MagicEightBallHandler} from "./handler/MagicEightBall.ts";
@@ -56,9 +56,9 @@ const intervalSubscriptionHandlers: IntervalSubscriptionHandlers = [
                 ],
                 isItFourTwentyHandlerAgent),
             new AbstractHandler(
-                [IsFourTwentyValidator.make().not()],
+                [IsSpecifiedTimeValidator.make("04:21", "16:21")],
                 [
-                    CreateSkeetAction.make("It's not 4:20 anywhere :(")
+                    CreateSkeetAction.make("It's no longer 4:20 anywhere :(")
                 ],
                 isItFourTwentyHandlerAgent)
         ]
