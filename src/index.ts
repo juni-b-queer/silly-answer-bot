@@ -1,14 +1,23 @@
 import {LieDetectorHandler} from "./handler/LieDetectorHandler.ts";
 import {
     AbstractHandler,
-    BadBotHandler, CreateSkeetAction,
+    BadBotHandler,
+    CreateSkeetAction, CreateSkeetMessage,
     DebugLog,
+    FunctionAction,
     GoodBotHandler,
-    HandlerAgent,
-    IntervalSubscription, IntervalSubscriptionHandlers, IsFourTwentyValidator, IsSpecifiedTimeValidator,
-    JetstreamSubscription, LogInputTextAction
+    HandlerAgent, InputIsCommandValidator,
+    IntervalSubscription,
+    IntervalSubscriptionHandlers,
+    IsFourTwentyValidator,
+    IsSpecifiedTimeValidator,
+    JetstreamMessage,
+    JetstreamSubscription,
+    LogInputTextAction,
+    MessageHandler
 } from "bsky-event-handlers";
 import {MagicEightBallHandler} from "./handler/MagicEightBall.ts";
+import moment from "moment-timezone";
 
 
 const lieDetectorHandlerAgent = new HandlerAgent(
@@ -37,7 +46,51 @@ let handlers = {
             new LieDetectorHandler(lieDetectorHandlerAgent),
             new MagicEightBallHandler(magic8BallHandlerAgent),
             GoodBotHandler.make(isItFourTwentyHandlerAgent),
-            BadBotHandler.make(isItFourTwentyHandlerAgent)
+            BadBotHandler.make(isItFourTwentyHandlerAgent),
+            MessageHandler.make(
+                [
+                    // Command !notify420
+                    InputIsCommandValidator.make("notify420", true)
+                ],
+                [
+                    CreateSkeetAction.make(
+                        (handerAgent: HandlerAgent, message: CreateSkeetMessage): string => {
+                            const messageText = message.record.text;
+                            // Attempt to parse timezone from message
+                            let replyTimezone = "America/Chicago"
+
+                            const fourtwentyAm = (4*60)+20
+                            const fourtwentyPm = (16*60)+20
+
+                            const allTimezones = moment.tz.names();
+
+                            allTimezones.forEach((timezone) => {
+                                if(messageText?.includes(timezone)){
+                                    replyTimezone = timezone;
+                                }
+                            });
+
+                            //determine if its am or pm and what timezone
+                            let now = moment.tz(replyTimezone);
+                            let hour = now.hour();
+                            let minute = now.minute();
+
+                            let msm = (hour*60) + minute;
+
+                            let ampm = "am";
+
+                            if(msm >=fourtwentyAm && msm < fourtwentyPm){
+                                ampm = "pm"
+                            }else if(msm > fourtwentyPm || msm <fourtwentyAm){
+                                ampm = "am"
+                            }
+                            return `!remindme 4:20${ampm} ${replyTimezone}`;
+                        },
+                        MessageHandler.generateReplyFromMessage
+                    )
+                ],
+                isItFourTwentyHandlerAgent
+            )
         ]
     },
 }
@@ -47,7 +100,7 @@ let intervalSubscription: IntervalSubscription;
 const intervalSubscriptionHandlers: IntervalSubscriptionHandlers = [
     {
         intervalSeconds: 60,
-        handlers:[
+        handlers: [
             new AbstractHandler(
                 [IsFourTwentyValidator.make()],
                 [

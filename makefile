@@ -8,6 +8,9 @@ build:
 up:
 	docker compose up -d
 
+jetstream:
+	docker compose up jetstream -d
+
 down:
 	docker compose down
 
