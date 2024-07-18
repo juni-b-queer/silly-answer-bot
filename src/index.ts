@@ -1,7 +1,7 @@
 import {LieDetectorHandler} from "./handler/LieDetectorHandler.ts";
 import {
     AbstractHandler,
-    BadBotHandler,
+    BadBotHandler, CreateLikeAction,
     CreateSkeetAction, CreateSkeetMessage,
     DebugLog,
     FunctionAction,
@@ -53,6 +53,10 @@ let handlers = {
                     InputIsCommandValidator.make("notify420", true)
                 ],
                 [
+                    CreateLikeAction.make(
+                        MessageHandler.getUriFromMessage,
+                        MessageHandler.getCidFromMessage
+                    ),
                     CreateSkeetAction.make(
                         (handerAgent: HandlerAgent, message: CreateSkeetMessage): string => {
                             const messageText = message.record.text;
