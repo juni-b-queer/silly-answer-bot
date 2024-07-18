@@ -93,7 +93,6 @@ let handlers = {
                         },
                         MessageHandler.generateReplyFromMessage
                     ),
-                    LogMessageAction.make()
                 ],
                 isItFourTwentyHandlerAgent
             )
