@@ -13,7 +13,7 @@ import {
     IsSpecifiedTimeValidator,
     JetstreamMessage,
     JetstreamSubscription,
-    LogInputTextAction,
+    LogInputTextAction, LogMessageAction,
     MessageHandler
 } from "bsky-event-handlers";
 import {MagicEightBallHandler} from "./handler/MagicEightBall.ts";
@@ -84,10 +84,12 @@ let handlers = {
                             }else if(msm > fourtwentyPm || msm <fourtwentyAm){
                                 ampm = "am"
                             }
+                            DebugLog.warn('NOTIFY420', `text: ${messageText} -- replied: !remindme 4:20${ampm} ${replyTimezone}`)
                             return `!remindme 4:20${ampm} ${replyTimezone}`;
                         },
                         MessageHandler.generateReplyFromMessage
-                    )
+                    ),
+                    LogMessageAction.make()
                 ],
                 isItFourTwentyHandlerAgent
             )
