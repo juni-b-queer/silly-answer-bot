@@ -69,7 +69,7 @@ let handlers = {
                             const allTimezones = moment.tz.names();
 
                             allTimezones.forEach((timezone) => {
-                                if(messageText?.includes(timezone)){
+                                if(messageText?.toLowerCase().includes(timezone.toLowerCase())){
                                     replyTimezone = timezone;
                                 }
                             });
