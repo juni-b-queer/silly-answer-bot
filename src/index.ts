@@ -47,55 +47,49 @@ let handlers = {
             new MagicEightBallHandler(magic8BallHandlerAgent),
             GoodBotHandler.make(isItFourTwentyHandlerAgent),
             BadBotHandler.make(isItFourTwentyHandlerAgent),
-            MessageHandler.make(
-                [
-                    // Command !notify420
-                    InputIsCommandValidator.make("notify420", true)
-                ],
-                [
-                    CreateLikeAction.make(
-                        MessageHandler.getUriFromMessage,
-                        MessageHandler.getCidFromMessage
-                    ),
-                    CreateSkeetAction.make(
-                        (handerAgent: HandlerAgent, message: CreateSkeetMessage): string => {
-                            const messageText = message.record.text;
-                            // Attempt to parse timezone from message
-                            let replyTimezone = "America/Chicago"
-
-                            const fourtwentyAm = (4*60)+20
-                            const fourtwentyPm = (16*60)+20
-
-                            const allTimezones = moment.tz.names();
-
-                            allTimezones.forEach((timezone) => {
-                                if(messageText?.toLowerCase().includes(timezone.toLowerCase())){
-                                    replyTimezone = timezone;
-                                }
-                            });
-
-                            //determine if its am or pm and what timezone
-                            let now = moment.tz(replyTimezone);
-                            let hour = now.hour();
-                            let minute = now.minute();
-
-                            let msm = (hour*60) + minute;
-
-                            let ampm = "am";
-
-                            if(msm >=fourtwentyAm && msm < fourtwentyPm){
-                                ampm = "pm"
-                            }else if(msm > fourtwentyPm || msm <fourtwentyAm){
-                                ampm = "am"
-                            }
-                            DebugLog.warn('NOTIFY420', `text: ${messageText} -- replied: !remindme 4:20${ampm} ${replyTimezone}`)
-                            return `!remindme 4:20${ampm} ${replyTimezone}`;
-                        },
-                        MessageHandler.generateReplyFromMessage
-                    ),
-                ],
-                isItFourTwentyHandlerAgent
-            )
+            // MessageHandler.make(
+            //     [
+            //         // Command !notify420
+            //         InputIsCommandValidator.make("notify420", true)
+            //     ],
+            //     [
+            //         CreateLikeAction.make(
+            //             MessageHandler.getUriFromMessage,
+            //             MessageHandler.getCidFromMessage
+            //         ),
+            //         CreateSkeetAction.make(
+            //             (handerAgent: HandlerAgent, message: CreateSkeetMessage): string => {
+            //                 const messageText = message.record.text;
+            //                 // Attempt to parse timezone from message
+            //                 let replyTimezone = "America/Chicago"
+            //
+            //                 const fourtwentyAm = (4*60)+20
+            //                 const fourtwentyPm = (16*60)+20
+            //
+            //                 const allTimezones = moment.tz.names();
+            //
+            //                 allTimezones.forEach((timezone) => {
+            //                     if(messageText?.toLowerCase().includes(timezone.toLowerCase())){
+            //                         replyTimezone = timezone;
+            //                     }
+            //                 });
+            //
+            //                 //determine if its am or pm and what timezone
+            //                 let now = moment.tz(replyTimezone);
+            //
+            //                 let msm = now.minute()+(60*now.hour())
+            //                 while(msm != fourtwentyAm && msm != fourtwentyPm){
+            //                     now.add(1, 'minutes')
+            //                     msm = now.minute()+(60*now.hour())
+            //                 }
+            //                 DebugLog.warn('NOTIFY420', `text: ${messageText} -- replied: !remindme ${now.toISOString()}`)
+            //                 return `!remindme ${now.toISOString()}`;
+            //             },
+            //             MessageHandler.generateReplyFromMessage
+            //         ),
+            //     ],
+            //     isItFourTwentyHandlerAgent
+            // )
         ]
     },
 }
