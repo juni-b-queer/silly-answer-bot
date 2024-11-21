@@ -5,7 +5,8 @@ import {
     InputIsCommandValidator,
     LogInputTextAction,
     MessageHandler,
-    ReplyToSkeetWithGeneratedTextAction
+    ReplyToSkeetWithGeneratedTextAction,
+    IsNewPost
 } from "bsky-event-handlers";
 
 const COMMAND = <string>Bun.env.MAGIC_BOT_COMMAND ?? "magic8ball"
@@ -16,7 +17,9 @@ export class MagicEightBallHandler extends MessageHandler {
         public handlerAgent: HandlerAgent,
     ) {
         super(
-            [new InputIsCommandValidator(COMMAND, false)],
+            [
+                IsNewPost.make(),
+                new InputIsCommandValidator(COMMAND, false)],
             [
                 new ReplyToSkeetWithGeneratedTextAction(responseGenerator),
                 new LogInputTextAction("magic 8 ball"),

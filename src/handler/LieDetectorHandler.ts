@@ -5,7 +5,8 @@ import {
     InputIsCommandValidator,
     LogInputTextAction,
     MessageHandler,
-    ReplyToSkeetWithGeneratedTextAction
+    ReplyToSkeetWithGeneratedTextAction,
+    IsNewPost
 } from "bsky-event-handlers";
 
 const COMMAND = <string>Bun.env.LIE_DETECTOR_COMMAND ?? "liedetector"
@@ -16,7 +17,9 @@ export class LieDetectorHandler extends MessageHandler {
         public handlerAgent: HandlerAgent,
     ) {
         super(
-            [new InputIsCommandValidator(COMMAND, false)],
+            [
+                IsNewPost.make(),
+                new InputIsCommandValidator(COMMAND, false)],
             [
                 new ReplyToSkeetWithGeneratedTextAction(responseGenerator),
                 new LogInputTextAction("lie detector"),
