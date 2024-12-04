@@ -1,12 +1,12 @@
 import {
     CreateLikeAction,
-    CreateSkeetMessage,
     HandlerAgent,
     InputIsCommandValidator,
+    IsNewPost,
+    JetstreamEventCommit,
     LogInputTextAction,
     MessageHandler,
-    ReplyToSkeetWithGeneratedTextAction,
-    IsNewPost
+    ReplyToSkeetWithGeneratedTextAction
 } from "bsky-event-handlers";
 
 const COMMAND = <string>Bun.env.MAGIC_BOT_COMMAND ?? "magic8ball"
@@ -29,7 +29,7 @@ export class MagicEightBallHandler extends MessageHandler {
         );
     }
 
-    async handle(handlerAgent: HandlerAgent | undefined, message: CreateSkeetMessage): Promise<void> {
+    async handle(handlerAgent: HandlerAgent | undefined, message: JetstreamEventCommit): Promise<void> {
         return super.handle(undefined, message);
     }
 }
@@ -57,7 +57,7 @@ const RESPONSES = [
     "Very doubtful."
 ];
 
-export function responseGenerator(handlerAgent: HandlerAgent, message: CreateSkeetMessage): string {
+export function responseGenerator(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string {
     let responseIndex = Math.floor(Math.random() * RESPONSES.length);
     let response = RESPONSES[responseIndex];
     console.log(response)
