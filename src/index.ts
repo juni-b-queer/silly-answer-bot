@@ -3,7 +3,7 @@ import {
     AbstractHandler,
     BadBotHandler,
     CreateSkeetAction,
-    DebugLog,
+    DebugLog, GoodAndBadBotHandler,
     GoodBotHandler,
     HandlerAgent,
     IntervalSubscription,
@@ -40,9 +40,13 @@ let handlers = {
     post: {
         c: [
             new LieDetectorHandler(lieDetectorHandlerAgent),
+            GoodAndBadBotHandler.make(lieDetectorHandlerAgent),
+
             new MagicEightBallHandler(magic8BallHandlerAgent),
-            GoodBotHandler.make(isItFourTwentyHandlerAgent),
-            BadBotHandler.make(isItFourTwentyHandlerAgent),
+            GoodAndBadBotHandler.make(magic8BallHandlerAgent),
+
+            GoodAndBadBotHandler.make(isItFourTwentyHandlerAgent),
+
             // MessageHandler.make(
             //     [
             //         // Command !notify420
