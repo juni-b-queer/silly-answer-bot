@@ -54,7 +54,8 @@ const RESPONSES = [
     "My reply is no.",
     "My sources say no.",
     "Outlook not so good.",
-    "Very doubtful."
+    "Very doubtful.",
+    "As likely as being banned for mentioning a bsky team member's like history"
 ];
 
 export function responseGenerator(handlerAgent: HandlerAgent, message: JetstreamEventCommit): string {
